@@ -2,13 +2,22 @@ import createUserService from "../services/users/createUser.service";
 import listUsersService from "../services/users/listUsers.service";
 import updateUsersService from "../services/users/updateUsers.service";
 import deleteUserService from "../services/users/deleteUser.service";
+import loginUserService from "../services/users/loginUser.service";
 
-const createUserController = (req, res) => {
-  const { email, name } = req.body;
+const createUserController = async (req, res) => {
+  const { email, name, password } = req.body;
 
-  const user = createUserService(email, name);
+  const user = await createUserService(email, name, password);
 
   return res.status(201).json(user);
+};
+
+const loginUserController = (req, res) => {
+  const { email, password } = req.body;
+
+  const login = loginUserService(email, password);
+
+  return res.status(200).json(login);
 };
 
 const listUsersController = (req, res) => {
@@ -39,4 +48,5 @@ export {
   listUsersController,
   createUserController,
   deleteUserControler,
+  loginUserController,
 };
