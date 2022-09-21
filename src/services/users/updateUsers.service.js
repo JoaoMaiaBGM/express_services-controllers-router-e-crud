@@ -1,4 +1,4 @@
-import users from "../database";
+import users from "../../database";
 
 const updateUsersService = (id, name, email) => {
   const updateUser = {
