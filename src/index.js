@@ -1,39 +1,22 @@
 import express from "express";
-import { v4 as uuidv4 } from "uuid";
+import createUserController from "./controllers/createUser.controller";
+import deleteUserControler from "./controllers/deleteUser.controller";
+import listUsersController from "./controllers/listUsers.controller";
+import updateUserController from "./controllers/updateUser.controller";
 
 const port = 3000;
-
-const users = [];
 
 const app = express();
 
 app.use(express.json());
 
-app.post("/users", (req, res) => {
-  const { email, name } = req.body;
+app.post("/users", createUserController);
 
-  const isAlreadyExist = users.find((user) => user.email === email);
+app.get("/users", listUsersController);
 
-  if (isAlreadyExist) {
-    return res
-      .status(400)
-      .json({ error: "This email adress is already being used" });
-  }
+app.put("/users/:id", updateUserController);
 
-  const newUser = {
-    email,
-    name,
-    id: uuidv4(),
-  };
-
-  users.push(newUser);
-
-  return res.status(201).json(newUser);
-});
-
-app.get("/users", (req, res) => {
-  return res.status(200).json(users);
-});
+app.delete("/users/:id", deleteUserControler);
 
 app.listen(port, () => {
   console.log(`server is running in port ${port}`);
